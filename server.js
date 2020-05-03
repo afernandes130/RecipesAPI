@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
+const http = require('http')
+const cors = require('cors')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-require('./api/models/msgModel');
 require('./api/models/usersModel');
 
 
@@ -14,10 +15,11 @@ mongoose.connect(process.env.URI, {useNewUrlParser: true, useUnifiedTopology: tr
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
-var routes = require('./api/routes/msgRoutes');
 var routes = require('./api/routes/usersRoutes');
 routes(app);
 
-app.listen(port);
-console.log('Message RESTful API server started on: ' + port);
+http.createServer(app).listen(port, () => {
+    console.log(`Message RESTful API server started on: http://localhost:${port}`);
+})

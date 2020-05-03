@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(app){
-var user = require('../controllers/usersController');
+const user = require('../controllers/usersController');
 
 app.route('/login')
     .post(user.Autentication);
