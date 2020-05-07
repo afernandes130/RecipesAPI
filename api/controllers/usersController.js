@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const Users = mongoose.model('Users');
+const emailaction = require('../config/email/emailActions');
+
+
+
 
 
 exports.Autentication = function (req, res, next) {
@@ -40,4 +44,16 @@ exports.Create = function (req, res, next) {
                 res.status(500).json(err)
             })
     })
+};
+
+exports.ForgotPassword = function(req, res, next){
+    emailaction.forgotPassword(req.body.email)
+    .then(resForgotPassword => {
+        res.status(200).json({isValid: true, resForgotPassword})        
+    })
+    .catch(error => {
+        res.status(500).json({isValid: false , error})
+
+    })
+
 };

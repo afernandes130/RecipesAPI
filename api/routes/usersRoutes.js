@@ -20,7 +20,7 @@ app.route('/login')
         }
     });
 
-     app.route('/login/create')
+    app.route('/login/create')
     .post([
         check('nickname')
             .exists().withMessage('NickName field is requerid'),
@@ -38,6 +38,17 @@ app.route('/login')
             user.Create(req, res)
         }
     });
+
+    app.route('/login/forgotpassword')
+    .post([
+        check('email')
+            .exists().withMessage('E-mail field is requerid')
+            .isEmail().withMessage('Invalid e-mail')
+        ], (req, res) => {
+            user.ForgotPassword(req, res)
+        }
+    )
+
 }; 
 
 
