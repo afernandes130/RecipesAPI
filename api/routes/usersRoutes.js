@@ -1,35 +1,33 @@
 'use strict';
-module.exports = function(app){
 const user = require('../controllers/usersController');
 const { check, validationResult } = require('express-validator');
+const router = require('express').Router();
 
-app.route('/login')
-    .post([
+    router.post('/login',[
         check('email')
             .exists().withMessage('E-mail field is requerid')
             .isEmail().withMessage('Invalid e-mail'),
         check('password')
             .exists().withMessage('Password field is requerid')
-    ], (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(422).json({ errors: errors.array() });
-        }
-        else{
-            user.Autentication(req, res)
-        }
-    });
+        ],(req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            }
+            else{
+                user.Autentication(req, res)
+            }
+        });
 
-    app.route('/login/create')
-    .post([
+    router.post('/create', [
         check('nickname')
             .exists().withMessage('NickName field is requerid'),
         check('email')
             .exists().withMessage('E-mail field is requerid')
             .isEmail().withMessage('Invalid e-mail'),
         check('password')
-            .exists().withMessage('Password field is requerid')
-    ], (req, res) => {
+            .exists().withMessage('Password field is requerid')], 
+    (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
           return res.status(422).json({ errors: errors.array() });
@@ -39,8 +37,7 @@ app.route('/login')
         }
     });
 
-    app.route('/login/forgotpassword')
-    .post([
+    router.post('/forgotpassword',[
         check('email')
             .exists().withMessage('E-mail field is requerid')
             .isEmail().withMessage('Invalid e-mail')
@@ -49,6 +46,4 @@ app.route('/login')
         }
     )
 
-}; 
-
-
+module.exports = router
