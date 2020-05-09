@@ -36,7 +36,7 @@ router.post('/create',
 router.post('/forgotpassword',
     [check('email','E-mail field is requerid').exists().notEmpty(),
     check('email','Invalid e-mail').isEmail()],
-    tokenValidation,
+    //tokenValidation,
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -52,7 +52,7 @@ router.post('/forgotpassword',
     check('email','Invalid e-mail').isEmail(),
     check('newpassword','Password field is requerid').notEmpty(),
     check('type','Type field is requerid').notEmpty()],
-    tokenValidation,
+    //tokenValidation,
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
