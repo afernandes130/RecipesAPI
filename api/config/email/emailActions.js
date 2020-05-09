@@ -13,12 +13,15 @@ let transporter = nodemailer.createTransport({
     }); 
 
  module.exports = {
-    forgotPassword(emails) {
+    forgotPassword(user, password) {
        return  transporter.sendMail({
             from: process.env.USERSMTP, // sender address
-            to: emails, // list of receivers
+            to: user.email, // list of receivers
             subject: "Recuperação de senha", // Subject line
-            html: "<b>CORPO DA MENSAGEM</b>" // html body
+            html: `
+                <b>Olá ${user.nickname} </b>
+                <br>
+                Nova senha: ${password}` // html body
         })
     }
  }

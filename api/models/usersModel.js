@@ -6,13 +6,11 @@ const loginSchema =  new Schema({
     nickname : {type : String, require : true},
     email:{ type: String, require : true, unique: true},
     password : {type: String, require : true},
-    status : {type : Boolean, require : true, default: true}
+    tempPassword : {type: String, default: null},
+    status : {type : Boolean, require : true, default: true},
+    changePassword : {type : Boolean, default: false},
+    createdOn: {type: Date, default: Date.now},
+    modifiedOn : {type: Date, default: Date.now},
 });
 
-
-loginSchema.method.GetNumber = () => {
-    const codigo = 1234
-    const messagemtoduser = `${this.nickname}, por favor digite o codigo ${codigo} no seu aplicativo`
-    console.log("messagemtoduser");
-}
 module.exports = mongoose.model('Users',loginSchema);
