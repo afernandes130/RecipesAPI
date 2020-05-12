@@ -1,14 +1,12 @@
-'use strict';
 const routes = require('express').Router();
-const userRoutes = require('./usersRoutes')
+const userRoutes = require('./usersRoutes');
 
 /* Defini rotas filhas */
-routes.use('/users',userRoutes);
+routes.use('/users', userRoutes);
 
-//Rota incial
+// Rota incial
 routes.get('/', (req, res) => {
-    return res.send("Welcome Recipes API")
+  return res.send('Welcome Recipes API');
+});
 
-})
-
-module.exports = routes
+module.exports = routes;
