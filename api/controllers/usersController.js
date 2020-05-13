@@ -5,6 +5,7 @@ const Users = mongoose.model('Users');
 const generator = require('generate-password');
 const emailaction = require('../config/email/emailActions');
 const { tokenGenerate } = require('../config/utils');
+const { IsValidRequest } = require('../validators/userValidator');
 
 async function encryptPassword(password) {
   return bcrypt.hash(password, 10);
@@ -25,6 +26,10 @@ async function updatePassword(user, newPassword) {
 }
 
 exports.Autentication = async function authentication(req, res) {
+
+  if (!IsValidRequest(req, res))
+    return;
+
   const user = await Users.findOne({ email: req.body.email });
   try {
     if (user === null) {
@@ -44,6 +49,10 @@ exports.Autentication = async function authentication(req, res) {
 };
 
 exports.Create = async function create(req, res) {
+
+  if (!IsValidRequest(req, res))
+    return;
+
   const user = new Users(req.body);
   user.password = await encryptPassword(req.body.password);
   try {
@@ -55,6 +64,10 @@ exports.Create = async function create(req, res) {
 };
 
 exports.ForgotPassword = async (req, res) => {
+
+  if (!IsValidRequest(req, res))
+    return;
+
   const user = await Users.findOne({ email: req.body.email });
   try {
     const password = generator.generate({ length: 8, numbers: true });
@@ -73,6 +86,10 @@ exports.ForgotPassword = async (req, res) => {
 };
 
 exports.ChangePassword = async (req, res) => {
+
+  if (!IsValidRequest(req, res))
+    return;
+
   try {
     const user = await Users.findOne({ email: req.body.email });
     if (req.body.type === 1) {
