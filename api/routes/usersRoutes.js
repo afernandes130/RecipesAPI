@@ -6,6 +6,7 @@ const { tokenValidation } = require('../config/utils');
 
 router.post('/login', validator.Autentication(), controller.Autentication);
 router.post('/create', validator.Create(), controller.Create);
+router.post('/create-or-login-google', validator.CreateOrLoginGoogle(), controller.CreateOrLoginGoogle);
 router.post('/forgot-password', validator.ForgotPassword(), controller.ForgotPassword);
 router.post('/change-password', validator.ChangePassword(), tokenValidation,  controller.ChangePassword);
 

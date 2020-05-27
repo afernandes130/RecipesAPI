@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
 const Users = mongoose.model('Users');
+const UsersGoogle = mongoose.model('UsersGoogle');
 const generator = require('generate-password');
 const emailaction = require('../config/email/emailActions');
 const { tokenGenerate } = require('../config/utils');
@@ -61,6 +62,23 @@ exports.Create = async function create(req, res) {
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+exports.CreateOrLoginGoogle = async function createOrLoginGoogle(req, res) {
+
+  if (!IsValidRequest(req, res))
+    return;
+
+  const userGoogle = await UsersGoogle.findOne({ id: req.body.id })
+  if (!userGoogle) {
+    try {
+      await new UsersGoogle(req.body).save();
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+  const token = tokenGenerate(userGoogle);
+  res.status(200).json({ auth: true, msg: 'Access OK', token });
 };
 
 exports.ForgotPassword = async (req, res) => {

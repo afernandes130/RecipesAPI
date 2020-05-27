@@ -16,6 +16,14 @@ exports.Create = function () {
         check('password', 'Password field is requerid').notEmpty()
     ];
 }
+exports.CreateOrLoginGoogle = function () {
+  return [
+      check('name', 'Name field is requerid').notEmpty(),
+      check('email', 'E-mail field is requerid').exists().notEmpty(),
+      check('email', 'Invalid e-mail').isEmail(),
+      check('id', 'Id field is requerid').notEmpty()
+  ];
+}
 exports.ForgotPassword = function () {
     return [
         check('email', 'E-mail field is requerid').exists().notEmpty(),
