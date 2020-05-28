@@ -54,6 +54,13 @@ exports.Create = async function create(req, res) {
   if (!IsValidRequest(req, res))
     return;
 
+  let userGoogle = await UsersGoogle.findOne({ email: req.body.email })
+
+  if (userGoogle) {
+    res.status(500).json({ errmsg: 'E-mail has already been used by a google account!' })
+    return
+  }
+
   const user = new Users(req.body);
   user.password = await encryptPassword(req.body.password);
   try {
@@ -69,10 +76,11 @@ exports.CreateOrLoginGoogle = async function createOrLoginGoogle(req, res) {
   if (!IsValidRequest(req, res))
     return;
 
-  const userGoogle = await UsersGoogle.findOne({ id: req.body.id })
-  if (!userGoogle) {
+  let userGoogle = await UsersGoogle.findOne({ id: req.body.id })
+  if (userGoogle === null) {
     try {
-      await new UsersGoogle(req.body).save();
+      userGoogle = new UsersGoogle(req.body)
+      userGoogle.save();
     } catch (error) {
       res.status(500).json(error);
     }
