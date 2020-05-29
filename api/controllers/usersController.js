@@ -76,6 +76,12 @@ exports.CreateOrLoginGoogle = async function createOrLoginGoogle(req, res) {
   if (!IsValidRequest(req, res))
     return;
 
+  let user = await Users.findOne({ email: req.body.email })
+  if (user) {
+    res.status(500).json({ msg: 'E-mail has already been used by a normal account!' })
+    return
+  }
+
   let userGoogle = await UsersGoogle.findOne({ id: req.body.id })
   if (userGoogle === null) {
     try {
